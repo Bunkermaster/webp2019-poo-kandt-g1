@@ -1,6 +1,8 @@
 <?php
 
-namespace Yann\Model;
+namespace Bunkermaster\Model;
+
+use Bunkermaster\Helper\DB;
 
 /**
  * Class PageModel
@@ -17,9 +19,46 @@ class PageModel
      */
     private function getAll($slug = null, $id = null, $default = null)
     {
-        $sql = "SELECT
-        ...";
-        return [];
+        $sql = "SELECT 
+  `id`, 
+  `h1`, 
+  `description`, 
+  `img`, 
+  `alt`, 
+  `slug`, 
+  `nav-title`,
+  `default_page`
+FROM 
+  `page` 
+";
+        if(!is_null($slug) || !is_null($id) || !is_null($default)){
+            $sql .= "WHERE\n";
+            $sqlCond = [];
+            if(!is_null($slug)){
+                $sqlCond[] = "`slug` = :slug\n";
+            }
+            if(!is_null($id)){
+                $sqlCond[] = "`id` = :id\n";
+            }
+            if(true === $default){
+                $sqlCond[] = "`default_page` = 1\n";
+            }
+            $sql .= implode("  AND ", $sqlCond);
+        }
+//        $db = DB::get();
+//        $stmt = $db->prepare($sql);
+        $stmt = DB::get()->prepare($sql);
+        if(!is_null($slug)){
+            $stmt->bindValue(':slug', $slug);
+        }
+        if(!is_null($id)){
+            $stmt->bindValue(':id', $id);
+        }
+        $stmt->execute();
+        if($stmt->errorCode() !== '00000'){
+            die('wtf dude! '.$stmt->errorInfo()[2]);
+        }
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
     /**
@@ -36,7 +75,7 @@ class PageModel
      */
     public function getBySlug($slug)
     {
-        return $this->getAll($slug);
+        return current($this->getAll($slug));
     }
 
     /**
@@ -45,7 +84,7 @@ class PageModel
      */
     public function getById($id)
     {
-        return $this->getAll(null, $id);
+        return current($this->getAll(null, $id));
     }
 
     /**
@@ -53,7 +92,7 @@ class PageModel
      */
     public function getDefault()
     {
-        return $this->getAll(null, null, true);
+        return current($this->getAll(null, null, true));
     }
 
     /**

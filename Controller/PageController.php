@@ -1,8 +1,8 @@
 <?php
 
-namespace Yann\Controller;
+namespace Bunkermaster\Controller;
 
-use Yann\Model\PageModel;
+use Bunkermaster\Model\PageModel;
 
 /**
  * Class PageController
@@ -11,6 +11,8 @@ use Yann\Model\PageModel;
  */
 class PageController
 {
+    /** @var PageModel $model */
+    private $model;
     /**
      * PageController constructor.
      */
@@ -24,7 +26,11 @@ class PageController
      */
     public function homeAction()
     {
+        // récuperation des données de la page par défaut
         $data = $this->model->getDefault();
+        // affichage de la page par défaut
+        // return render
+        return $data;
     }
 
     /**
@@ -32,7 +38,8 @@ class PageController
      */
     public function detailsAction()
     {
-        $data = $this->model->getBySlug($_GET['slug'] ?? null);
+        $data = $this->model->getBySlug('les-chatons-wesh-grosdsfdsfg');
+        return $data;
     }
 
     /**
@@ -40,7 +47,7 @@ class PageController
      */
     public function fourOFourAction()
     {
-        
+        // pas de model
     }
 
     /**
@@ -48,7 +55,7 @@ class PageController
      */
     public function adminHomeAction()
     {
-        
+        $data = $this->model->getList();
     }
 
     /**
@@ -56,7 +63,7 @@ class PageController
      */
     public function adminDetailsAction()
     {
-        
+        $this->model->getById($_GET['id'] ?? false );
     }
 
     /**
