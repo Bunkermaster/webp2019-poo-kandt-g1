@@ -85,7 +85,7 @@ class PageController
     /**
      * admin delete method
      */
-    public function adminDeleteWTFMDRAction()
+    public function adminDeleteAction()
     {
 
     }
