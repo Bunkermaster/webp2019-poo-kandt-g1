@@ -30,7 +30,9 @@ class PageController
         $data = $this->model->getDefault();
         // affichage de la page par défaut
         // return render
-        return $data;
+        ob_start();
+        require APP_DIR_VIEW."page-front.php";
+        return ob_get_clean();
     }
 
     /**
@@ -38,7 +40,7 @@ class PageController
      */
     public function detailsAction()
     {
-        $data = $this->model->getBySlug('les-chatons-wesh-grosdsfdsfg');
+        $data = $this->model->getBySlug('les-chatons-wesh-grosds');
         return $data;
     }
 

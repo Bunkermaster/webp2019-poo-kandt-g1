@@ -7,5 +7,4 @@
  */
 require_once "vendor/autoload.php";
 $controller = new \Bunkermaster\Controller\PageController();
-$output = $controller->detailsAction();
-dump($output);
+echo $controller->homeAction();
