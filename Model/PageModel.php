@@ -31,18 +31,18 @@ class PageModel
 FROM 
   `page` 
 ";
-        if(!is_null($slug) || !is_null($id) || !is_null($default)){
+        $sqlCond = [];
+        if(!is_null($slug)){
+            $sqlCond[] = "`slug` = :slug\n";
+        }
+        if(!is_null($id)){
+            $sqlCond[] = "`id` = :id\n";
+        }
+        if(true === $default){
+            $sqlCond[] = "`default_page` = 1\n";
+        }
+        if(count($sqlCond) > 0){
             $sql .= "WHERE\n";
-            $sqlCond = [];
-            if(!is_null($slug)){
-                $sqlCond[] = "`slug` = :slug\n";
-            }
-            if(!is_null($id)){
-                $sqlCond[] = "`id` = :id\n";
-            }
-            if(true === $default){
-                $sqlCond[] = "`default_page` = 1\n";
-            }
             $sql .= implode("  AND ", $sqlCond);
         }
 //        $db = DB::get();
