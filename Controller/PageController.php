@@ -40,8 +40,22 @@ class PageController
      */
     public function detailsAction()
     {
-        $data = $this->model->getBySlug('les-chatons-wesh-grosds');
-        return $data;
+        if (!isset($_GET['s']) || trim($_GET['s']) === '') {
+            header("Location: ./");
+            exit;
+        }
+        $slug = $_GET['s'];
+        $data = $this->model->getBySlug($slug);
+        if ($data === false) {
+            http_response_code(404);
+            die('Pas de page');
+        }
+        // affichage de la page par défaut
+        // return render
+        ob_start();
+        require APP_DIR_VIEW."page-front.php";
+        return ob_get_clean();
+
     }
 
     /**
