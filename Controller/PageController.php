@@ -2,6 +2,7 @@
 
 namespace Bunkermaster\Controller;
 
+use Bunkermaster\Helper\DefaultPageNotFoundException;
 use Bunkermaster\Model\PageModel;
 
 /**
@@ -28,6 +29,9 @@ class PageController
     {
         // récuperation des données de la page par défaut
         $data = $this->model->getDefault();
+        if(false === $data){
+            throw new DefaultPageNotFoundException('Page par défaut pas trouvée!', 101);
+        }
         // affichage de la page par défaut
         // return render
         ob_start();
@@ -41,21 +45,21 @@ class PageController
     public function detailsAction()
     {
         if (!isset($_GET['s']) || trim($_GET['s']) === '') {
-            header("Location: ./");
+            header("Location: ./?a=400");
             exit;
         }
         $slug = $_GET['s'];
         $data = $this->model->getBySlug($slug);
         if ($data === false) {
-            http_response_code(404);
-            die('Pas de page');
+            header("Location: ./?a=404");
+            exit;
         }
         // affichage de la page par défaut
         // return render
         ob_start();
         require APP_DIR_VIEW."page-front.php";
-        return ob_get_clean();
 
+        return ob_get_clean();
     }
 
     /**

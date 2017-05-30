@@ -6,6 +6,7 @@
  * Time: 10:06
  */
 require_once "vendor/autoload.php";
-$controller = new \Bunkermaster\Controller\PageController();
-//echo $controller->homeAction();
-echo $controller->detailsAction();
+
+use \Bunkermaster\Helper\FrontController;
+
+FrontController::appStart();
