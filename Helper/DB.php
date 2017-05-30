@@ -14,7 +14,7 @@ class DB
     public static function get()
     {
         if(is_null(self::$db)){
-            self::$db = new \PDO('mysql:host=localhost;dbname=kandddtg1','root','root');
+            self::$db = new \PDO('mysql:host=localhost;dbname=kandtg1','root','root');
             self::$db->exec('SET NAMES UTF8;');
         }
         return self::$db;

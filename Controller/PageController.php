@@ -35,7 +35,7 @@ class PageController
         // affichage de la page par défaut
         // return render
         ob_start();
-        require APP_DIR_VIEW."page-front.php";
+        require APP_DIR_VIEW."page/page-front.php";
         return ob_get_clean();
     }
 
@@ -57,7 +57,7 @@ class PageController
         // affichage de la page par défaut
         // return render
         ob_start();
-        require APP_DIR_VIEW."page-front.php";
+        require APP_DIR_VIEW."page/page-front.php";
 
         return ob_get_clean();
     }
@@ -75,7 +75,7 @@ class PageController
      */
     public function adminHomeAction()
     {
-        $data = $this->model->getList();
+        return var_export($this->model->getList(),1);
     }
 
     /**
