@@ -75,7 +75,11 @@ class PageController
      */
     public function adminHomeAction()
     {
-        return var_export($this->model->getList(),1);
+        $data = $this->model->getList();
+        ob_start();
+        require APP_DIR_VIEW."page/list.php";
+
+        return ob_get_clean();
     }
 
     /**

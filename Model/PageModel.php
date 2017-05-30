@@ -42,8 +42,7 @@ FROM
             $sqlCond[] = "`default_page` = 1\n";
         }
         if(count($sqlCond) > 0){
-            $sql .= "WHERE\n";
-            $sql .= implode("  AND ", $sqlCond);
+            $sql .= "WHERE\n" . implode("  AND ", $sqlCond);
         }
 //        $db = DB::get();
 //        $stmt = $db->prepare($sql);
@@ -58,6 +57,7 @@ FROM
         if($stmt->errorCode() !== '00000'){
             die('wtf dude! '.$stmt->errorInfo()[2]);
         }
+
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
