@@ -104,11 +104,41 @@ FROM
     }
 
     /**
-     *
+     * @param $data
+     * @return bool
      */
-    public function add()
+    public function add($data)
     {
-
+        $sql = "INSERT INTO
+                    `page`
+                    (
+                      `h1`,
+                      `description`,
+                      `img`,
+                      `alt`,
+                      `slug`,
+                      `nav-title`
+                    ) VALUES (
+                      :h1,
+                      :description,
+                      :img,
+                      :alt,
+                      :slug,
+                      :navtitle
+                    );
+        ";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":h1", $data['h1']);
+        $stmt->bindValue(":description", $data['description']);
+        $stmt->bindValue(":img", $data['img']);
+        $stmt->bindValue(":alt", $data['alt']);
+        $stmt->bindValue(":slug", $data['slug']);
+        $stmt->bindValue(":navtitle", $data['nav-title']);
+        $stmt->execute();
+        if ($stmt->errorCode() !== '00000') {
+            throw new \PDOException(__METHOD__.' marche pas!');
+        }
+        return true;
     }
 
     /**

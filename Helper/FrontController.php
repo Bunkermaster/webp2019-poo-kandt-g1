@@ -30,6 +30,11 @@ class FrontController
                     $output = $controller->adminHomeAction();
                     break;
 
+                case 'admin/add':
+                    $controller = new PageController();
+                    $output = $controller->adminAddAction();
+                    break;
+
                 case '404':
                     $output = ErrorController::error404Action();
                     break;

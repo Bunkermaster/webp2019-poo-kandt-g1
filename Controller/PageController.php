@@ -95,6 +95,25 @@ class PageController
      */
     public function adminAddAction()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($this->model->add($_POST) === true) {
+                header('Location: ./?a=admin');
+            } else {
+                throw new \Exception('4eme dimension');
+            }
+        } else {
+            ob_start();
+            $data = new \stdClass();
+            $data->h1 = '';
+            $data->description = '';
+            $data->img = '';
+            $data->alt = '';
+            $data->slug = '';
+            $data->{'nav-title'} = '';
+            require APP_DIR_VIEW."page/add-form.php";
+
+            return ob_get_clean();
+        }
 
     }
 

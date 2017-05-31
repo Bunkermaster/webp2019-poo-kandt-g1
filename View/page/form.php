@@ -1,13 +1,4 @@
-<?php
-    $isChecked = function ($checked)
-    {
-        if($checked == true){
-            return ' checked="checked"';
-        }
-        return '';
-    }
-?>
-<form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+<form action="<?=$_SERVER['REQUEST_URI']?>" method="post">
     <input type="hidden" name="id" value="<?=$data->id ?? ''?>">
     <p>
         <label for="h1">h1</label><br>
@@ -32,10 +23,6 @@
     <p>
         <label for="nav-title">nav-title</label><br>
         <input type="text" name="nav-title" id="nav-title" value="<?=$data->{'nav-title'} ?? ''?>">
-    </p>
-    <p>
-        <label for="default_page">default_page</label><br>
-        <input type="checkbox" name="default_page" id="default_page" value="1"<?=$isChecked($data->default_page ?? 0)?>>
     </p>
     <p>
         <input type="Submit" value="<?=isset($data->id)?'Modifier':'Ajouter';?>">
