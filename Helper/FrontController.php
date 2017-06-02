@@ -35,6 +35,11 @@ class FrontController
                     $output = $controller->adminAddAction();
                     break;
 
+                case 'admin/edit':
+                    $controller = new PageController();
+                    $output = $controller->adminEditAction();
+                    break;
+
                 case '404':
                     $output = ErrorController::error404Action();
                     break;
@@ -54,7 +59,7 @@ class FrontController
             $output = ErrorController::error500Action();
         } catch(\PDOException $e){
             // gestion exception
-            $output = ErrorController::error500Action("Probleme de DB!");
+            $output = ErrorController::error500Action("Probleme de DB!").$e->getMessage();
         } catch( \Twig_Error $e){
             // gestion exception
         } catch( \Exception $e){

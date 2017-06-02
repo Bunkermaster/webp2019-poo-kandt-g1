@@ -6,7 +6,7 @@
     </p>
     <p>
         <label for="description">Description</label><br>
-        <input type="text" name="description" id="description" value="<?=$data->description ?? ''?>">
+        <textarea name="description" id="description" cols="50" rows="10"><?=$data->description ?? ''?></textarea>
     </p>
     <p>
         <label for="img">Image</label><br>

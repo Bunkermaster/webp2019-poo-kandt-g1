@@ -3,13 +3,14 @@
 namespace Bunkermaster\Model;
 
 use Bunkermaster\Helper\DB;
+use Bunkermaster\Helper\Model;
 
 /**
  * Class PageModel
  * @author Yann Le Scouarnec <bunkermaster@gmail.com>
  * @package Yann\Model
  */
-class PageModel
+class PageModel extends Model
 {
     /**
      * @param null|string $slug
@@ -54,9 +55,7 @@ FROM
             $stmt->bindValue(':id', $id);
         }
         $stmt->execute();
-        if($stmt->errorCode() !== '00000'){
-            die('wtf dude! '.$stmt->errorInfo()[2]);
-        }
+        $this->errorManagement($stmt);
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
@@ -66,6 +65,7 @@ FROM
      */
     public function getList()
     {
+
         return $this->getAll();
     }
 
@@ -75,6 +75,7 @@ FROM
      */
     public function getBySlug($slug)
     {
+
         return current($this->getAll($slug));
     }
 
@@ -84,6 +85,7 @@ FROM
      */
     public function getById($id)
     {
+
         return current($this->getAll(null, $id));
     }
 
@@ -92,22 +94,46 @@ FROM
      */
     public function getDefault()
     {
+
         return current($this->getAll(null, null, true));
     }
 
     /**
      *
      */
-    public function update()
+    public function update(array $data)
     {
+        $sql = "UPDATE
+  `page`
+SET
+  `h1` = :h1,
+  `description` = :description,
+  `img` = :img,
+  `alt` = :alt,
+  `slug` = :slug,
+  `nav-title` = :navtitle
+WHERE
+  `id` =  :id;
+";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":h1", $data['h1']);
+        $stmt->bindValue(":description", $data['description']);
+        $stmt->bindValue(":img", $data['img']);
+        $stmt->bindValue(":alt", $data['alt']);
+        $stmt->bindValue(":slug", $data['slug']);
+        $stmt->bindValue(":navtitle", $data['nav-title']);
+        $stmt->bindValue(":id", $data['id']);
+        $stmt->execute();
+        $this->errorManagement($stmt);
 
+        return true;
     }
 
     /**
      * @param $data
      * @return bool
      */
-    public function add($data)
+    public function add(array $data)
     {
         $sql = "INSERT INTO
                     `page`
@@ -135,9 +161,8 @@ FROM
         $stmt->bindValue(":slug", $data['slug']);
         $stmt->bindValue(":navtitle", $data['nav-title']);
         $stmt->execute();
-        if ($stmt->errorCode() !== '00000') {
-            throw new \PDOException(__METHOD__.' marche pas!');
-        }
+        $this->errorManagement($stmt);
+
         return true;
     }
 

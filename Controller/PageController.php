@@ -2,6 +2,7 @@
 
 namespace Bunkermaster\Controller;
 
+use Bunkermaster\Helper\Controller;
 use Bunkermaster\Helper\DefaultPageNotFoundException;
 use Bunkermaster\Model\PageModel;
 
@@ -10,7 +11,7 @@ use Bunkermaster\Model\PageModel;
  * @author Yann Le Scouarnec <bunkermaster@gmail.com>
  * @package Yann\Controller
  */
-class PageController
+class PageController extends Controller
 {
     /** @var PageModel $model */
     private $model;
@@ -34,9 +35,10 @@ class PageController
         }
         // affichage de la page par défaut
         // return render
-        ob_start();
-        require APP_DIR_VIEW."page/page-front.php";
-        return ob_get_clean();
+        return $this->render("page/page-front.php", $data);
+//        ob_start();
+//        require APP_DIR_VIEW."page/page-front.php";
+//        return ob_get_clean();
     }
 
     /**
@@ -60,14 +62,6 @@ class PageController
         require APP_DIR_VIEW."page/page-front.php";
 
         return ob_get_clean();
-    }
-
-    /**
-     * front 404 method
-     */
-    public function fourOFourAction()
-    {
-        // pas de model
     }
 
     /**
@@ -114,7 +108,6 @@ class PageController
 
             return ob_get_clean();
         }
-
     }
 
     /**
@@ -122,7 +115,21 @@ class PageController
      */
     public function adminEditAction()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($this->model->update($_POST) === true) {
+                header('Location: ./?a=admin');
+            } else {
+                throw new \Exception('4eme dimension');
+            }
+        } else {
+            if (!isset($_GET['id']) || trim($_GET['id']) === '') {
+                header("Location: ./?a=400");
+                exit;
+            }
+            $data = $this->model->getById((int) $_GET['id']);
 
+            return $this->render("page/add-form.php", $data);
+        }
     }
 
     /**

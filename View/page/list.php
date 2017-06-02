@@ -22,7 +22,7 @@
             <tr>
                 <td><?=$page->id?></td>
                 <td><?=$page->slug?></td>
-                <td>+</td>
+                <td><a href="./?a=admin/edit&id=<?=$page->id?>">[edit]</a></td>
             </tr>
         <?php endforeach;?>
     <?php else :?>
