@@ -60,4 +60,24 @@ abstract class Controller
             return '';
         }
     }
+
+    public function verificationParamGet($param = 'id')
+    {
+        if (!isset($_GET[$param]) || trim($_GET[$param]) === '') {
+            header("Location: ./?a=400");
+            exit;
+        }
+
+        return $_GET[$param];
+    }
+
+    public function goHome($msg = false)
+    {
+        $msgParam = '';
+        if(false !== $msg){
+            $msgParam = '&err='.$msg;
+        }
+        header('Location: ./?a=admin'.$msgParam);
+        exit;
+    }
 }

@@ -47,12 +47,7 @@ class PageController extends Controller
      */
     public function detailsAction()
     {
-        if (!isset($_GET['s']) || trim($_GET['s']) === '') {
-            header("Location: ./?a=400");
-            exit;
-        }
-        $slug = $_GET['s'];
-        $data = $this->model->getBySlug($slug);
+        $data = $this->model->getBySlug($this->verificationParamGet('s'));
         if ($data === false) {
             header("Location: ./?a=404");
             exit;
@@ -84,7 +79,7 @@ class PageController extends Controller
      */
     public function adminDetailsAction()
     {
-        $this->model->getById($_GET['id'] ?? false );
+        return var_export($this->model->getById($this->verificationParamGet()),1);
     }
 
     /**
@@ -125,11 +120,7 @@ class PageController extends Controller
                 throw new \Exception('4eme dimension');
             }
         } else {
-            if (!isset($_GET['id']) || trim($_GET['id']) === '') {
-                header("Location: ./?a=400");
-                exit;
-            }
-            $data = $this->model->getById((int) $_GET['id']);
+            $data = $this->model->getById((int) $this->verificationParamGet('id'));
 
             return $this->render("page/add-form.php", $data);
         }
@@ -142,7 +133,7 @@ class PageController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             if ($this->model->delete($_POST['id']) === true) {
-                header('Location: ./?a=admin');
+                $this->goHome();
             } else {
                 throw new \Exception('4eme dimension');
             }
@@ -157,11 +148,24 @@ class PageController extends Controller
         }
     }
 
+    /**
+     * @return string
+     */
     public function nombreDePages()
     {
         $count = $this->model->getCount();
         return $this->render("page/widget-count.php", [
             'count' => $count
         ]);
+    }
+
+    /**
+     * mettre une page en page par defaut
+     * @return void
+     */
+    public function defaultizerAction()
+    {
+        $this->model->setDefault($this->verificationParamGet('id'));
+        $this->goHome('yeah!');
     }
 }

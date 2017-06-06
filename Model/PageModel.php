@@ -167,7 +167,8 @@ WHERE
     }
 
     /**
-     *
+     * @param int $id
+     * @return bool
      */
     public function delete($id)
     {
@@ -204,5 +205,32 @@ LIMIT 1
         $stmt->execute();
         $this->errorManagement($stmt);
         return $stmt->fetch(\PDO::FETCH_OBJ)->dracula;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     * @throws \Exception
+     */
+    public function setDefault($id)
+    {
+        if (false === $data = $this->getById($id)) {
+            throw new \Exception('Ooooops MORDUUUUUUU');
+        }
+        if ($data->default_page === 1) {
+            throw new \Exception('Ooooops tatan elle fait des flans');
+        }
+        $sql = "UPDATE
+  `page`
+SET
+  `default_page` = if( `id` = :id, 1, 0)
+WHERE
+  `default_page` = 1
+  OR `id` = :id;";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        return true;
     }
 }

@@ -45,6 +45,11 @@ class FrontController
                     $output = $controller->adminDeleteAction();
                     break;
 
+                case 'admin/defaultize':
+                    $controller = new PageController();
+                    $output = $controller->defaultizerAction();
+                    break;
+
                 case '404':
                     $output = ErrorController::error404Action();
                     break;

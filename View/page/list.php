@@ -29,7 +29,7 @@
                     <a href="./?a=admin/edit&id=<?=$page->id?>"><button type="button" value="Edit" class="btn btn-warning btn-sm">
                         <img src="img/edith.jpg" alt="" width="50"></button></a>
                     <?php if($page->default_page != 1):?>
-                        <input type="button" value="Default" class="btn btn-success btn-sm">
+                        <a href="./?a=admin/defaultize&id=<?=$page->id?>"><input type="button" value="Default" class="btn btn-success btn-sm"></a>
                     <a href="./?a=admin/delete&id=<?=$page->id?>"><input type="button" value="Delete" class="btn btn-danger btn-sm"></a>
                     <?php else:?>
                         <input type="button" value="Default" class="btn btn-secondary btn-sm">
