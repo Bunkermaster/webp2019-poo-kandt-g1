@@ -169,8 +169,40 @@ WHERE
     /**
      *
      */
-    public function delete()
+    public function delete($id)
     {
+        // backup
+        $sql = "INSERT INTO `page_sauvegarde`(`id`, `h1`, `description`, `img`, `alt`, `slug`, `nav-title`, `default_page`)
+  SELECT `id`, `h1`, `description`, `img`, `alt`, `slug`, `nav-title`, `default_page`
+FROM `page` WHERE id = :id;";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        // delete
+        $sql = "DELETE FROM 
+  `page` 
+WHERE 
+  `id` = :id 
+  AND `default_page` = 0
+LIMIT 1
+";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        return true;
+    }
 
+    /**
+     * @return int
+     */
+    public function getCount()
+    {
+        $sql = "SELECT count(*) as dracula FROM `page`";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        return $stmt->fetch(\PDO::FETCH_OBJ)->dracula;
     }
 }

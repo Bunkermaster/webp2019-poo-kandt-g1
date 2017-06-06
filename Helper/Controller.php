@@ -50,4 +50,14 @@ abstract class Controller
 
         return true;
     }
+
+    public function errorBlock($msg)
+    {
+        if ($msg !== false) {
+
+            return $this->render('page/error-block.php', $msg);
+        } else {
+            return '';
+        }
+    }
 }

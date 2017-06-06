@@ -1,0 +1,1 @@
+<span class="badge badge-pill badge-success"><?=(int) $data['count']?> pages</span>

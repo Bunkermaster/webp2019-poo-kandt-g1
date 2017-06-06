@@ -1,0 +1,18 @@
+{
+  "0000": {
+    "type": "danger",
+    "msg": "Rue des boulets, rue des boulets..."
+  },
+  "0001": {
+    "type": "danger",
+    "msg": "Page deja defaut"
+  },
+  "0002": {
+    "type": "danger",
+    "msg": "Oops I did it again"
+  },
+  "yeaaaaah": {
+    "type": "success",
+    "msg": "Tu r0x bruh!"
+  }
+}

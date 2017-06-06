@@ -40,6 +40,11 @@ class FrontController
                     $output = $controller->adminEditAction();
                     break;
 
+                case 'admin/delete':
+                    $controller = new PageController();
+                    $output = $controller->adminDeleteAction();
+                    break;
+
                 case '404':
                     $output = ErrorController::error404Action();
                     break;
@@ -49,10 +54,15 @@ class FrontController
                     break;
 
                 case 'home':
-                default:
+                case '':
+                case '/':
                     $controller = new PageController();
                     $output = $controller->homeAction();
                     break;
+
+                default:
+                    header("Location: ./?a=404");
+                    exit;
             }
         } catch(DefaultPageNotFoundException $e){
             // gestion

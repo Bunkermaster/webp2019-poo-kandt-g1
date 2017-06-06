@@ -36,3 +36,9 @@ SET
   `default_page` = :defaultpage
 WHERE
   `id` =  :id;
+
+-- OMFG
+
+INSERT INTO `page_sauvegarde`(`id`, `h1`, `description`, `img`, `alt`, `slug`, `nav-title`, `default_page`)
+  SELECT `id`, `h1`, `description`, `img`, `alt`, `slug`, `nav-title`, `default_page`
+FROM `page` WHERE id = 1;

@@ -11,18 +11,31 @@
 </head>
 <body>
     <div role="main" class="container">
+        <?=$data['error-block']?>
+        <p><a href="./?a=admin/add"><input type="button" value="Add" class="btn btn-success btn-sm"></a> <?=$data['count-widget']?></p>
         <table class="table table-bordered">
             <tr>
                 <th>ID</th>
                 <th>Slug</th>
                 <th>Action</th>
             </tr>
-    <?php if (is_array($data) && count($data)) :?>
-        <?php foreach($data as $page):?>
+    <?php if (is_array($data['pages']) && count($data['pages'])) :?>
+        <?php foreach($data['pages'] as $page):?>
             <tr>
                 <td><?=$page->id?></td>
                 <td><?=$page->slug?></td>
-                <td><a href="./?a=admin/edit&id=<?=$page->id?>">[edit]</a></td>
+                <td>
+                    <a href="./?a=admin/details&id=<?=$page->id?>"><input type="button" value="Details" class="btn btn-primary btn-sm"></a>
+                    <a href="./?a=admin/edit&id=<?=$page->id?>"><button type="button" value="Edit" class="btn btn-warning btn-sm">
+                        <img src="img/edith.jpg" alt="" width="50"></button></a>
+                    <?php if($page->default_page != 1):?>
+                        <input type="button" value="Default" class="btn btn-success btn-sm">
+                    <a href="./?a=admin/delete&id=<?=$page->id?>"><input type="button" value="Delete" class="btn btn-danger btn-sm"></a>
+                    <?php else:?>
+                        <input type="button" value="Default" class="btn btn-secondary btn-sm">
+                    <input type="button" value="Delete" class="btn btn-secondary btn-sm">
+                    <?php endif;?>
+                </td>
             </tr>
         <?php endforeach;?>
     <?php else :?>

@@ -4,6 +4,7 @@ namespace Bunkermaster\Controller;
 
 use Bunkermaster\Helper\Controller;
 use Bunkermaster\Helper\DefaultPageNotFoundException;
+use Bunkermaster\Helper\ErrorMessage;
 use Bunkermaster\Model\PageModel;
 
 /**
@@ -69,7 +70,9 @@ class PageController extends Controller
      */
     public function adminHomeAction()
     {
-        $data = $this->model->getList();
+        $data['error-block'] = $this->errorBlock(ErrorMessage::getError($_GET['err'] ?? false));
+        $data['pages'] = $this->model->getList();
+        $data['count-widget'] = $this->nombreDePages();
         ob_start();
         require APP_DIR_VIEW."page/list.php";
 
@@ -137,6 +140,28 @@ class PageController extends Controller
      */
     public function adminDeleteAction()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            if ($this->model->delete($_POST['id']) === true) {
+                header('Location: ./?a=admin');
+            } else {
+                throw new \Exception('4eme dimension');
+            }
+        } else {
 
+            // on affiche la page de suppression avec les données injectées directement
+            // depuis le model dans la vue (en passant par un cast pour passer de stdClass à array)
+            return $this->render(
+                "page/delete-form.php",
+                (array) $this->model->getById($_GET['id'] ?? false)
+            );
+        }
+    }
+
+    public function nombreDePages()
+    {
+        $count = $this->model->getCount();
+        return $this->render("page/widget-count.php", [
+            'count' => $count
+        ]);
     }
 }
