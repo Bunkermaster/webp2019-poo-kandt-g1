@@ -51,6 +51,16 @@ class FrontController
                     $output = $controller->adminDeleteAction();
                     break;
 
+                case 'admin/up':
+                    $controller = new PageController();
+                    $output = $controller->upAction();
+                    break;
+
+                case 'admin/down':
+                    $controller = new PageController();
+                    $output = $controller->downAction();
+                    break;
+
                 case 'admin/defaultize':
                     $controller = new PageController();
                     $controller->defaultizerAction();

@@ -165,4 +165,16 @@ class PageController extends Controller
         $this->model->setDefault($this->verificationParamGet('id'));
         $this->goHome('yeah!');
     }
+
+    public function upAction()
+    {
+        $this->model->goUp($this->verificationParamGet('id'));
+        $this->goHome('mona');
+    }
+
+    public function downAction()
+    {
+        $this->model->goDown($this->verificationParamGet('id'));
+        $this->goHome('staire');
+    }
 }
