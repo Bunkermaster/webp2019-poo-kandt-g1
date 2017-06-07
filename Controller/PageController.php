@@ -33,7 +33,7 @@ class PageController extends Controller
         // récuperation des données de la page par défaut
         $data['page'] = $this->model->getDefault();
         $data['nav'] = $this->model->getNav();
-        if(false === $data){
+        if(false === $data['page']){
             throw new DefaultPageNotFoundException('Page par défaut pas trouvée!', 101);
         }
         // affichage de la page par défaut
@@ -48,7 +48,7 @@ class PageController extends Controller
     {
         $data['page'] = $this->model->getBySlug($this->verificationParamGet('s'));
         $data['nav'] = $this->model->getNav();
-        if ($data === false) {
+        if ($data['page'] === false) {
             header("Location: ./?a=404");
             exit;
         }
