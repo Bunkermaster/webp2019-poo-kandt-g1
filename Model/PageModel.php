@@ -28,7 +28,8 @@ class PageModel extends Model
   `alt`, 
   `slug`, 
   `nav-title`,
-  `default_page`
+  `default_page`,
+  `orderfield`
 FROM 
   `page` 
 ";
@@ -45,6 +46,7 @@ FROM
         if(count($sqlCond) > 0){
             $sql .= "WHERE\n" . implode("  AND ", $sqlCond);
         }
+        $sql .= "\nORDER BY `orderfield` ASC";
 //        $db = DB::get();
 //        $stmt = $db->prepare($sql);
         $stmt = DB::get()->prepare($sql);
@@ -162,6 +164,7 @@ WHERE
         $stmt->bindValue(":navtitle", $data['nav-title']);
         $stmt->execute();
         $this->errorManagement($stmt);
+        $this->resetOrder();
 
         return true;
     }
@@ -192,6 +195,8 @@ LIMIT 1
         $stmt->bindValue(":id", $id);
         $stmt->execute();
         $this->errorManagement($stmt);
+        $this->resetOrder();
+
         return true;
     }
 
@@ -242,12 +247,77 @@ LIMIT 1
         FROM
           `page`
         ORDER BY 
-          `default_page` DESC 
+          `orderfield` ASC
         ";
         $stmt = DB::get()->prepare($sql);
         $stmt->execute();
         $this->errorManagement($stmt);
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function resetOrder()
+    {
+        DB::get()->exec("SET @tempVariable:= 0;");
+        $sql = "UPDATE
+                  `page`
+                SET
+                  `orderfield` = (@tempVariable:=@tempVariable+10)
+                ORDER BY 
+                  `orderfield` ASC;";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+    }
+
+    public function goUp($id)
+    {
+        return $this->upOrDown($id, true);
+    }
+
+    public function goDown($id)
+    {
+        return $this->upOrDown($id, false);
+    }
+
+    private function upOrDown(int $id, bool $up = true)
+    {
+        $sens = "+";
+        if($up === true){
+            $sens = "-";
+        }
+        $sql = "UPDATE
+          `page`
+        SET
+          `orderfield` = `orderfield` $sens 15
+        WHERE
+          `id` = :id
+        ";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        $this->resetOrder();
+
+        return true;
+    }
+
+    public function forcePosition(int $id, int $orderfield)
+    {
+        $sql = "UPDATE
+          `page`
+        SET
+          `orderfield` = :orderfield
+        WHERE
+          `id` = :id
+        ";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":orderfield", $orderfield);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        $this->resetOrder();
+
+        return true;
     }
 }

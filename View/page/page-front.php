@@ -15,7 +15,9 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <?php foreach($data['nav'] as $unePage):?>
-                <li<?=isActive($data['page']->slug, $unePage->slug)?>><a href="./?a=details&s=<?=$unePage->slug?>"><?=$unePage->{"nav-title"}?></a></li>
+                <li<?=isActive($data['page']->slug, $unePage->slug)?>>
+                    <a href="./?a=details&s=<?=$unePage->slug?>"><?=$unePage->{"nav-title"}?></a>
+                </li>
                 <?php endforeach; ?>
             </ul>
         </div>

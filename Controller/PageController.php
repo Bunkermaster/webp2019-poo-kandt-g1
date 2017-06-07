@@ -33,7 +33,7 @@ class PageController extends Controller
         // récuperation des données de la page par défaut
         $data['page'] = $this->model->getDefault();
         $data['nav'] = $this->model->getNav();
-        if(false === $data){
+        if(false === $data['page']){
             throw new DefaultPageNotFoundException('Page par défaut pas trouvée!', 101);
         }
         // affichage de la page par défaut
@@ -48,7 +48,7 @@ class PageController extends Controller
     {
         $data['page'] = $this->model->getBySlug($this->verificationParamGet('s'));
         $data['nav'] = $this->model->getNav();
-        if ($data === false) {
+        if ($data['page'] === false) {
             header("Location: ./?a=404");
             exit;
         }
@@ -164,5 +164,34 @@ class PageController extends Controller
     {
         $this->model->setDefault($this->verificationParamGet('id'));
         $this->goHome('yeah!');
+    }
+
+    public function upAction()
+    {
+        $this->model->goUp($this->verificationParamGet('id'));
+        $this->goHome('mona');
+    }
+
+    public function downAction()
+    {
+        $this->model->goDown($this->verificationParamGet('id'));
+        $this->goHome('staire');
+    }
+
+    public function jumpToAction()
+    {
+        $id = $this->verificationParamGet('id');
+        $position = $this->verificationParamGet('pos');
+        if (false === $data = $this->model->getById($id)){
+            throw new \Exception('YEYEYEYEYEYEYEYE HOHOHOHOHHOHOHO');
+        }
+        if(($data->orderfield / 10) > $position){
+            $newPosition = ($position * 10) - 5;
+        } else {
+            $newPosition = ($position * 10) + 5;
+        }
+        $this->model->forcePosition($id, $newPosition);
+        echo "wtf";
+        $this->goHome();
     }
 }

@@ -14,5 +14,13 @@
   "yeah!": {
     "type": "success",
     "msg": "Tu r0x bruh!"
+  },
+  "mona": {
+    "type": "success",
+    "msg": "UP!!!!"
+  },
+  "staire": {
+    "type": "success",
+    "msg": "DOWN!!!!"
   }
 }
