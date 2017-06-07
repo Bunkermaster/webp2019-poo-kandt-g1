@@ -1,3 +1,27 @@
+CREATE TABLE `page` (
+  `id` int(11) NOT NULL,
+  `h1` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `img` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alt` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nav-title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `default_page` tinyint(4) NOT NULL DEFAULT '0',
+  `orderfield` int(10) UNSIGNED NOT NULL DEFAULT '10000'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `page` (`id`, `h1`, `description`, `img`, `alt`, `slug`, `nav-title`, `default_page`, `orderfield`) VALUES
+  (1, 'Les Teletubbies', 'C\'est flippant. Ouesh gros\r\n<p>lol</p>', 'img/teletubbies.jpg', 'Teletubbiessssss', 'les-teletubbies', 'Teletubbies', 0, 30),
+  (2, 'Les Chatons !', 'C\'est mignon.\r\n\r\n', 'img/three_kittens.jpg', 'Kittens', 'les-chatons-wesh-gros', 'Chatons', 0, 10),
+  (3, 'Iron Maiden!', 'C\'est vieux.', 'img/ironmaiden.jpg', 'Eddy', 'iron-maiden-ca-pique', 'Ironmaiden', 0, 40),
+  (5, 'Les mangas!!!', 'Woooooah la culture Japonaise\r\n\r\n', 'img/manga.jpg', 'Woooooahhh', 'onegai-sshimasu-goshijin-sama', 'Mangaaaa', 1, 20);
+
+ALTER TABLE `page`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `page`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
 INSERT INTO
 `page`
 (
