@@ -57,6 +57,7 @@ abstract class Controller
 
             return $this->render('page/error-block.php', $msg);
         } else {
+
             return '';
         }
     }

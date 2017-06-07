@@ -19,7 +19,8 @@
             "Bunkermaster\\Model\\": "Model/"
         },
         "files": [
-            "conf.php"
+            "conf.php",
+            "Functions/views.php"
         ]
     }
 }

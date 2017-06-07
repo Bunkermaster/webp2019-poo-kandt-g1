@@ -221,16 +221,33 @@ LIMIT 1
             throw new \Exception('Ooooops tatan elle fait des flans');
         }
         $sql = "UPDATE
-  `page`
-SET
-  `default_page` = if( `id` = :id, 1, 0)
-WHERE
-  `default_page` = 1
-  OR `id` = :id;";
+                  `page`
+                SET
+                  `default_page` = if( `id` = :id, 1, 0)
+                WHERE
+                  `default_page` = 1
+                  OR `id` = :id;";
         $stmt = DB::get()->prepare($sql);
         $stmt->bindValue(":id", $id);
         $stmt->execute();
         $this->errorManagement($stmt);
         return true;
+    }
+
+    public function getNav()
+    {
+        $sql = "SELECT
+            `nav-title`,
+            `slug`
+        FROM
+          `page`
+        ORDER BY 
+          `default_page` DESC 
+        ";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 }

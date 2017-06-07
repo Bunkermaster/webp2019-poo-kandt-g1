@@ -18,6 +18,8 @@ class FrontController
         $output = '';
         try {
             $action = $_GET['a'] ?? $_POST['a'] ?? '';
+            // on simplifie les routes en supprimant les leading et trailing /
+            $action = ltrim(rtrim($action,"/"), "/");
             switch($action){
                 case 'details':
                     $controller = new PageController();
@@ -25,7 +27,6 @@ class FrontController
                     break;
 
                 case 'admin':
-                case 'admin/':
                     $controller = new PageController();
                     $output = $controller->adminHomeAction();
                     break;
@@ -40,6 +41,11 @@ class FrontController
                     $output = $controller->adminEditAction();
                     break;
 
+                case 'admin/details':
+                    $controller = new PageController();
+                    $output = $controller->adminDetailsAction();
+                    break;
+
                 case 'admin/delete':
                     $controller = new PageController();
                     $output = $controller->adminDeleteAction();
@@ -47,7 +53,7 @@ class FrontController
 
                 case 'admin/defaultize':
                     $controller = new PageController();
-                    $output = $controller->defaultizerAction();
+                    $controller->defaultizerAction();
                     break;
 
                 case '404':
@@ -60,7 +66,6 @@ class FrontController
 
                 case 'home':
                 case '':
-                case '/':
                     $controller = new PageController();
                     $output = $controller->homeAction();
                     break;
@@ -75,11 +80,13 @@ class FrontController
         } catch(\PDOException $e){
             // gestion exception
             $output = ErrorController::error500Action("Probleme de DB!").$e->getMessage();
-        } catch( \Twig_Error $e){
+        } catch(\Twig_Error $e){
             // gestion exception
-        } catch( \Exception $e){
+        } catch(\Exception $e){
+//            $reflection = new \ReflectionClass($e);
+//            echo $reflection->getName();
             // gestion exception
-            $output = $e->getMessage();
+            $output = $e->getMessage()." lol";
         }
 //        header('Content-Type: application/json');
         echo $output;

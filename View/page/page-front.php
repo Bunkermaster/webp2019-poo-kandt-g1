@@ -10,23 +10,23 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">WtfWeb</a>
+            <a class="navbar-brand" href="./">WtfWeb</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">Teletubbies</a></li>
-                <li><a href="kittens.html">Kittens</a></li>
-                <li><a href="ironmaiden.html">Iron Maiden</a></li>
+                <?php foreach($data['nav'] as $unePage):?>
+                <li<?=isActive($data['page']->slug, $unePage->slug)?>><a href="./?a=details&s=<?=$unePage->slug?>"><?=$unePage->{"nav-title"}?></a></li>
+                <?php endforeach; ?>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container theme-showcase" role="main">
     <div class="jumbotron">
-        <h1><?=$data->h1?></h1>
-        <p><?=$data->description?></p>
+        <h1><?=$data['page']->h1?></h1>
+        <p><?=$data['page']->description?></p>
     </div>
-    <img class="img-thumbnail" alt="<?=$data->alt?>" src="<?=$data->img?>" data-holder-rendered="true">
+    <img class="img-thumbnail" alt="<?=$data['page']->alt?>" src="<?=$data['page']->img?>" data-holder-rendered="true">
 </div>
 </body>
 </html>

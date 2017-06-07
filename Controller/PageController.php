@@ -6,6 +6,7 @@ use Bunkermaster\Helper\Controller;
 use Bunkermaster\Helper\DefaultPageNotFoundException;
 use Bunkermaster\Helper\ErrorMessage;
 use Bunkermaster\Model\PageModel;
+use MongoDB\Driver\Exception\ExecutionTimeoutException;
 
 /**
  * Class PageController
@@ -30,16 +31,14 @@ class PageController extends Controller
     public function homeAction()
     {
         // récuperation des données de la page par défaut
-        $data = $this->model->getDefault();
+        $data['page'] = $this->model->getDefault();
+        $data['nav'] = $this->model->getNav();
         if(false === $data){
             throw new DefaultPageNotFoundException('Page par défaut pas trouvée!', 101);
         }
         // affichage de la page par défaut
         // return render
         return $this->render("page/page-front.php", $data);
-//        ob_start();
-//        require APP_DIR_VIEW."page/page-front.php";
-//        return ob_get_clean();
     }
 
     /**
@@ -47,17 +46,15 @@ class PageController extends Controller
      */
     public function detailsAction()
     {
-        $data = $this->model->getBySlug($this->verificationParamGet('s'));
+        $data['page'] = $this->model->getBySlug($this->verificationParamGet('s'));
+        $data['nav'] = $this->model->getNav();
         if ($data === false) {
             header("Location: ./?a=404");
             exit;
         }
         // affichage de la page par défaut
         // return render
-        ob_start();
-        require APP_DIR_VIEW."page/page-front.php";
-
-        return ob_get_clean();
+        return $this->render("page/page-front.php", $data);
     }
 
     /**
@@ -68,10 +65,8 @@ class PageController extends Controller
         $data['error-block'] = $this->errorBlock(ErrorMessage::getError($_GET['err'] ?? false));
         $data['pages'] = $this->model->getList();
         $data['count-widget'] = $this->nombreDePages();
-        ob_start();
-        require APP_DIR_VIEW."page/list.php";
 
-        return ob_get_clean();
+        return $this->render("page/list.php", $data);
     }
 
     /**
@@ -79,7 +74,11 @@ class PageController extends Controller
      */
     public function adminDetailsAction()
     {
-        return var_export($this->model->getById($this->verificationParamGet()),1);
+
+        return $this->render(
+            "page/admin-details.php",
+            ['data' => $this->model->getById($this->verificationParamGet())]
+        );
     }
 
     /**
@@ -94,7 +93,6 @@ class PageController extends Controller
                 throw new \Exception('4eme dimension');
             }
         } else {
-            ob_start();
             $data = new \stdClass();
             $data->h1 = '';
             $data->description = '';
@@ -102,9 +100,8 @@ class PageController extends Controller
             $data->alt = '';
             $data->slug = '';
             $data->{'nav-title'} = '';
-            require APP_DIR_VIEW."page/add-form.php";
 
-            return ob_get_clean();
+            return $this->render("page/add-form.php", $data);
         }
     }
 
@@ -135,7 +132,7 @@ class PageController extends Controller
             if ($this->model->delete($_POST['id']) === true) {
                 $this->goHome();
             } else {
-                throw new \Exception('4eme dimension');
+                throw new \Exception('Mexican twilight zone (mariachi edition)');
             }
         } else {
 
