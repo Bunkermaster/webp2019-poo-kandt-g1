@@ -61,6 +61,11 @@ class FrontController
                     $output = $controller->downAction();
                     break;
 
+                case 'admin/forceposition':
+                    $controller = new PageController();
+                    $output = $controller->jumpToAction();
+                    break;
+
                 case 'admin/defaultize':
                     $controller = new PageController();
                     $controller->defaultizerAction();

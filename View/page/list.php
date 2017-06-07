@@ -37,6 +37,12 @@
                     <?php endif;?>
                     <a href="./?a=admin/up&id=<?=$page->id?>"><button type="button" class="btn btn-info btn-sm">&#8679;</button></a>
                     <a href="./?a=admin/down&id=<?=$page->id?>"><button type="button" class="btn btn-info btn-sm">&#8681;</button></a>
+                    <select name="" id="gmal" onselect="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
                 </td>
             </tr>
         <?php endforeach;?>

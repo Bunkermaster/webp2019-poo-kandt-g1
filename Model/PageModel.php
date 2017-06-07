@@ -28,7 +28,8 @@ class PageModel extends Model
   `alt`, 
   `slug`, 
   `nav-title`,
-  `default_page`
+  `default_page`,
+  `orderfield`
 FROM 
   `page` 
 ";
@@ -294,6 +295,25 @@ LIMIT 1
         ";
         $stmt = DB::get()->prepare($sql);
         $stmt->bindValue(":id", $id);
+        $stmt->execute();
+        $this->errorManagement($stmt);
+        $this->resetOrder();
+
+        return true;
+    }
+
+    public function forcePosition(int $id, int $orderfield)
+    {
+        $sql = "UPDATE
+          `page`
+        SET
+          `orderfield` = :orderfield
+        WHERE
+          `id` = :id
+        ";
+        $stmt = DB::get()->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":orderfield", $orderfield);
         $stmt->execute();
         $this->errorManagement($stmt);
         $this->resetOrder();

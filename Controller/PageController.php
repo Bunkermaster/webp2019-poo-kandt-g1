@@ -177,4 +177,20 @@ class PageController extends Controller
         $this->model->goDown($this->verificationParamGet('id'));
         $this->goHome('staire');
     }
+
+    public function jumpToAction()
+    {
+        $id = $this->verificationParamGet('id');
+        $position = $this->verificationParamGet('pos');
+        if (false === $data = $this->model->getById($id)){
+            throw new \Exception('YEYEYEYEYEYEYEYE HOHOHOHOHHOHOHO');
+        }
+        if(($data->orderfield / 10) > $position){
+            $newPosition = ($position * 10) - 5;
+        } else {
+            $newPosition = ($position * 10) + 5;
+        }
+        $this->model->forcePosition($id, $newPosition);
+        $this->goHome();
+    }
 }
