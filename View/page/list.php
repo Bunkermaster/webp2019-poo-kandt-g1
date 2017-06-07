@@ -37,11 +37,10 @@
                     <?php endif;?>
                     <a href="./?a=admin/up&id=<?=$page->id?>"><button type="button" class="btn btn-info btn-sm">&#8679;</button></a>
                     <a href="./?a=admin/down&id=<?=$page->id?>"><button type="button" class="btn btn-info btn-sm">&#8681;</button></a>
-                    <select name="" id="gmal" onselect="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                    <select class="orderSelect" id="gmal_<?=$page->id?>" page_id="<?=$page->id?>">
+                        <?php for($i = 1;$i <= count($data['pages']); $i++):?>
+                        <option value="<?=$i?>"<?=($i == $page->orderfield / 10 ? ' selected="selected"':"");?>><?=$i?></option>
+                        <?php endfor;?>
                     </select>
                 </td>
             </tr>
@@ -53,5 +52,20 @@
     <?php endif;?>
         </table>
     </div>
+    <script language="JavaScript">
+//        var orderSelect = document.getElementById("gmal_1");
+        var orderSelectCollection = document.getElementsByClassName("orderSelect");
+        Array.prototype.filter.call(orderSelectCollection, function(orderSelect){
+            orderSelect.addEventListener("change", function(){
+                changeOrder(this);
+            }, false);
+        });
+        function changeOrder(selectObj) {
+            window.open(
+                './?a=admin/forceposition&id='+selectObj.getAttribute('page_id')+'&pos='+selectObj.value,
+                '_self'
+            );
+        }
+    </script>
 </body>
 </html>

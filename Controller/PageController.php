@@ -191,6 +191,7 @@ class PageController extends Controller
             $newPosition = ($position * 10) + 5;
         }
         $this->model->forcePosition($id, $newPosition);
+        echo "wtf";
         $this->goHome();
     }
 }
